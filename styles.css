@@ -1,0 +1,978 @@
+
+/* ==========================================
+   1. general page stuff
+========================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background: #eaf4fc;
+  color: #243449;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 35px;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 12px 35px rgba(31, 71, 105, 0.1);
+}
+
+
+/* ==========================================
+   2. header
+========================================== */
+
+header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #367dc3;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+h1 {
+  margin: 0 0 10px;
+  color: #243449;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+header > p:last-child {
+  margin: 0;
+  color: #7a8b9c;
+  font-size: 14px;
+}
+
+
+/* ==========================================
+   3. searching the poke
+========================================== */
+
+.search-section {
+  max-width: 800px;
+  margin: 0 auto 25px;
+}
+
+#search-form {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+#search-input {
+  width: 100%;
+  height: 48px;
+  padding: 12px 15px;
+  background: #ffffff;
+  border: 1px solid #d7e4ee;
+  border-radius: 12px;
+  color: #243449;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+  border-color: #367dc3;
+  box-shadow: 0 0 0 3px rgba(54, 125, 195, 0.1);
+}
+
+#search-input::placeholder {
+  color: #9aa9b7;
+}
+
+
+/* ==========================================
+   4. auto complete
+========================================== */
+
+#search-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-height: 270px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d7e4ee;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(31, 71, 105, 0.15);
+  z-index: 100;
+  text-align: left;
+}
+
+.suggestion-item {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
+  color: #243449;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestion-item:hover,
+.suggestion-item:focus {
+  background: #eaf4fc;
+  color: #367dc3;
+  outline: none;
+}
+
+.suggestion-item + .suggestion-item {
+  border-top: 1px solid #eef2f6;
+}
+
+
+/* ==========================================
+   5. buttons
+========================================== */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(54, 125, 195, 0.35);
+  outline-offset: 2px;
+}
+
+#search-form button[type="submit"] {
+  height: 48px;
+  padding: 0 22px;
+  background: #367dc3;
+  color: #ffffff;
+}
+
+#search-form button[type="submit"]:hover {
+  background: #2869a8;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#random-btn {
+  padding: 12px 22px;
+  background: #eef6fc;
+  color: #367dc3;
+  border: 1px solid #d7e7f5;
+}
+
+#random-btn:hover:not(:disabled) {
+  background: #dcecf9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   6. loading and errors
+========================================== */
+
+#status {
+  margin: 15px 0;
+  color: #607286;
+  font-size: 14px;
+  text-align: center;
+}
+
+#status:empty {
+  display: none;
+}
+
+
+/* ==========================================
+   7. poke profile
+========================================== */
+
+#pokemon-card {
+  margin-top: 25px;
+}
+
+.pokemon-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+#pokemon-number {
+  margin: 0 0 4px;
+  color: #92a2b2;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+#pokemon-name {
+  margin: 0;
+  color: #243449;
+  font-size: 34px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+
+/* ==========================================
+   8. type badges
+========================================== */
+
+#pokemon-types {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 6px 17px;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+
+/* ==========================================
+   9. pokemon variants
+========================================== */
+
+.pokemon-variant-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 15px 18px;
+  background: #f4f8fc;
+  border: 1px solid #e6eef5;
+  border-radius: 14px;
+}
+
+.variant-label {
+  flex-shrink: 0;
+  color: #607286;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.variant-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  background: #e7eef6;
+  border-radius: 10px;
+}
+
+.variant-tab {
+  padding: 9px 18px;
+  background: transparent;
+  color: #607286;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.variant-tab.active {
+  background: #367dc3;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(54, 125, 195, 0.15);
+}
+
+.variant-tab:hover:not(.active):not(:disabled) {
+  background: #d5e5f3;
+}
+
+.variant-description {
+  flex: 1;
+  min-width: 180px;
+  margin: 0;
+  color: #8293a4;
+  font-size: 12px;
+}
+
+.mega-tab {
+  background: transparent;
+  color: #607286;
+}
+
+.mega-tab.active {
+  background: #367dc3;
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   10. mega and primal energy
+========================================== */
+
+.mega-energy-info {
+  margin-bottom: 22px;
+  padding: 18px 22px;
+  background: #eef6fc;
+  border: 1px solid #d7e7f5;
+  border-radius: 14px;
+}
+
+.mega-energy-info h4 {
+  margin: 0 0 10px;
+  color: #245d99;
+  font-size: 16px;
+}
+
+.mega-energy-info p {
+  margin: 5px 0;
+  color: #53677d;
+  font-size: 13px;
+}
+
+
+/* ==========================================
+   11. main dashboard
+========================================== */
+
+.pokemon-dashboard {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.artwork-panel,
+.pokemon-data-panel {
+  min-width: 0;
+  padding: 24px;
+  background: #f8fbfe;
+  border: 1px solid #e6eef5;
+  border-radius: 18px;
+}
+
+.artwork-panel h3,
+.pokemon-data-panel h3 {
+  margin: 0 0 15px;
+  color: #344b66;
+  font-size: 19px;
+}
+
+
+/* ==========================================
+   12. regular and shiny images
+========================================== */
+
+.pokemon-forms {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pokemon-form {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 16px 8px 12px;
+  background: #ffffff;
+  border: 1px solid #e6eef5;
+  border-radius: 14px;
+}
+
+.pokemon-form img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  max-width: 210px;
+  height: 210px;
+  object-fit: contain;
+}
+
+.pokemon-form p {
+  position: relative;
+  z-index: 3;
+  margin: 10px 0 0;
+  color: #607286;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+#shiny-status {
+  margin: 18px 0 0;
+  color: #8293a4;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+}
+
+
+/* ==========================================
+   13. shadow poke images
+========================================== */
+
+.pokemon-form.shadow-form {
+  background: radial-gradient(
+    ellipse at center,
+    #e4d6f5 0%,
+    #f1e9fa 55%,
+    #ffffff 100%
+  );
+  border-color: #bca5dc;
+}
+
+.pokemon-form.shadow-form::before {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 75%;
+  top: 8%;
+  left: 10%;
+  background: radial-gradient(
+    ellipse,
+    rgba(119, 59, 174, 0.5) 0%,
+    rgba(149, 86, 206, 0.3) 40%,
+    rgba(149, 86, 206, 0) 75%
+  );
+  filter: blur(14px);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pokemon-form.shadow-form img {
+  filter:
+    drop-shadow(0 0 10px rgba(130, 55, 180, 0.65))
+    drop-shadow(0 0 20px rgba(110, 45, 160, 0.35));
+}
+
+.pokemon-form.shadow-form p {
+  color: #7650a4;
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   14. shadow info
+========================================== */
+
+.shadow-info {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f2eff9;
+  border-left: 3px solid #8970bd;
+  border-radius: 8px;
+}
+
+.shadow-info h4 {
+  margin: 0 0 8px;
+  color: #625087;
+  font-size: 15px;
+}
+
+.shadow-info p {
+  margin: 8px 0;
+  color: #655b78;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ==========================================
+   15. cp levels
+========================================== */
+
+.cp-section {
+  margin-bottom: 28px;
+}
+
+.cp-section h3 {
+  margin-bottom: 5px;
+}
+
+.section-description {
+  margin: 0 0 18px;
+  color: #8293a4;
+  font-size: 13px;
+}
+
+.cp-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cp-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 20px 8px;
+  background: #eef6fc;
+  border: 1px solid #e0edf8;
+  border-radius: 14px;
+}
+
+.cp-level span {
+  color: #607286;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cp-level strong {
+  color: #245d99;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+
+/* ==========================================
+   16. base stats
+========================================== */
+
+.stats-section {
+  margin-top: 25px;
+}
+
+.stats-section h3 {
+  margin-bottom: 18px;
+}
+
+#pokemon-stats {
+  text-align: left;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  color: #607286;
+  font-size: 14px;
+}
+
+.stat-row strong {
+  color: #243449;
+  font-size: 14px;
+}
+
+.stat-bar {
+  width: 100%;
+  height: 9px;
+  overflow: hidden;
+  background: #e9f0f6;
+  border-radius: 20px;
+}
+
+.stat-fill {
+  height: 100%;
+  background: #70b0e4;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+
+/* ==========================================
+   17. battle analysis
+========================================== */
+
+.battle-section {
+  margin-top: 25px;
+  padding: 25px;
+  background: #f8fbfe;
+  border: 1px solid #e6eef5;
+  border-radius: 18px;
+}
+
+.section-heading h3 {
+  margin: 0 0 5px;
+  color: #344b66;
+  font-size: 21px;
+}
+
+.moves-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+  padding: 5px;
+  background: #eef3f8;
+  border-radius: 12px;
+}
+
+.moves-tab {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 10px;
+  background: transparent;
+  color: #607286;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.moves-tab.active {
+  background: #367dc3;
+  color: #ffffff;
+}
+
+.moves-tab:hover:not(.active) {
+  background: #dce8f2;
+}
+
+
+/* ==========================================
+   18. rankings
+========================================== */
+
+.rankings-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e6eef5;
+  border-radius: 14px;
+}
+
+.rankings-section h4 {
+  margin: 0 0 8px;
+  color: #344b66;
+  font-size: 17px;
+}
+
+#rankings-content {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.data-source {
+  margin: 15px 0 0;
+  color: #92a2b2;
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   19. poke moves
+========================================== */
+
+.moves-section {
+  margin-top: 20px;
+}
+
+.moves-section h4 {
+  margin: 0 0 15px;
+  color: #344b66;
+  font-size: 17px;
+}
+
+#moves-content {
+  text-align: left;
+}
+
+#moves-content h4 {
+  margin: 22px 0 12px;
+  color: #344b66;
+  font-size: 15px;
+}
+
+.move-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  background: #ffffff;
+  border: 1px solid #e6eef5;
+  border-radius: 10px;
+}
+
+.move-row span {
+  flex-shrink: 0;
+  color: #607286;
+  font-size: 13px;
+}
+
+.move-row strong {
+  color: #243449;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  line-height: 1.5;
+}
+
+.move-note {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: #eef6fc;
+  border-left: 3px solid #367dc3;
+  border-radius: 6px;
+  color: #53677d;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+
+/* ==========================================
+   20. investment info
+========================================== */
+
+.investment-section {
+  margin-top: 25px;
+  padding: 25px;
+  background: #f8fbfe;
+  border: 1px solid #e6eef5;
+  border-radius: 18px;
+}
+
+.investment-section h3 {
+  margin: 0 0 5px;
+  color: #344b66;
+  font-size: 19px;
+}
+
+#investment-content {
+  color: #53677d;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+#investment-content p {
+  margin: 10px 0;
+}
+
+
+/* ==========================================
+   21. footer
+========================================== */
+
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5edf4;
+  text-align: center;
+}
+
+footer p {
+  margin: 6px 0;
+  color: #92a2b2;
+  font-size: 12px;
+}
+
+footer a {
+  color: #367dc3;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* ==========================================
+   22. tablet layout
+========================================== */
+
+@media (max-width: 900px) {
+  .container {
+    padding: 28px;
+  }
+
+  .pokemon-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-form img {
+    max-width: 240px;
+    height: 240px;
+  }
+}
+
+
+/* ==========================================
+   23. mobile layout
+========================================== */
+
+@media (max-width: 600px) {
+  body {
+    padding: 20px 12px;
+  }
+
+  .container {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  h1 {
+    font-size: 27px;
+  }
+
+  .pokemon-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #pokemon-name {
+    font-size: 28px;
+  }
+
+  #pokemon-types {
+    justify-content: flex-start;
+  }
+
+  .pokemon-variant-controls {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .variant-tabs {
+    width: 100%;
+  }
+
+  .variant-tab {
+    flex: 1;
+    padding: 9px 12px;
+  }
+
+  .variant-description {
+    min-width: 0;
+  }
+
+  .artwork-panel,
+  .pokemon-data-panel,
+  .battle-section,
+  .investment-section {
+    padding: 16px;
+  }
+
+  .pokemon-forms {
+    gap: 8px;
+  }
+
+  .pokemon-form {
+    padding: 12px 6px;
+  }
+
+  .pokemon-form img {
+    height: 150px;
+  }
+
+  .cp-grid {
+    gap: 8px;
+  }
+
+  .cp-level {
+    padding: 16px 5px;
+  }
+
+  .cp-level strong {
+    font-size: 20px;
+  }
+
+  .moves-tab {
+    padding: 12px 5px;
+    font-size: 12px;
+  }
+
+  #rankings-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================
+   24. small screens
+========================================== */
+
+@media (max-width: 400px) {
+  #search-form {
+    flex-direction: column;
+  }
+
+  #search-form button[type="submit"] {
+    width: 100%;
+  }
+
+  .pokemon-form img {
+    height: 125px;
+  }
+
+  .cp-level strong {
+    font-size: 17px;
+  }
+
+  .move-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .move-row strong {
+    text-align: left;
+  }
+}

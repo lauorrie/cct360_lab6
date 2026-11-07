@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pokémon GO Companion</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <!-- ==========================================
+         1. header
+    ========================================== -->
+
+    <header>
+      <p class="eyebrow">Trainer Database</p>
+
+      <h1>Pokémon GO Companion</h1>
+
+      <p>
+        Explore Pokémon stats, combat power,
+        movesets, and battle performance.
+      </p>
+    </header>
+
+
+    <!-- ==========================================
+         2. searching the poke
+    ========================================== -->
+
+    <section class="search-section">
+
+      <form id="search-form" autocomplete="off">
+
+        <div class="search-wrapper">
+
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search Pokémon name or number"
+            aria-label="Search Pokémon"
+            aria-controls="search-suggestions"
+            aria-autocomplete="list"
+            spellcheck="false"
+            autocomplete="off"
+            required
+          >
+
+          <div
+            id="search-suggestions"
+            role="listbox"
+            hidden>
+          </div>
+
+        </div>
+
+        <button type="submit">Search</button>
+
+      </form>
+
+      <div class="controls">
+        <button id="random-btn" type="button">
+          Random Pokémon
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         3. loading and errors
+    ========================================== -->
+
+    <p id="status" role="status">
+      Loading Pokémon data...
+    </p>
+
+
+    <!-- ==========================================
+         4. poke profile
+    ========================================== -->
+
+    <section id="pokemon-card" hidden>
+
+      <div class="pokemon-heading">
+
+        <div>
+          <p id="pokemon-number"></p>
+          <h2 id="pokemon-name"></h2>
+        </div>
+
+        <div id="pokemon-types"></div>
+
+      </div>
+
+
+      <!-- ==========================================
+           5. pokemon variants
+      ========================================== -->
+
+      <div class="pokemon-variant-controls">
+
+        <span class="variant-label">
+          Pokémon Variant
+        </span>
+
+        <div class="variant-tabs" id="variant-tabs">
+
+          <button
+            type="button"
+            id="normal-tab"
+            class="variant-tab active"
+            aria-pressed="true">
+            Normal
+          </button>
+
+          <button
+            type="button"
+            id="shadow-tab"
+            class="variant-tab"
+            aria-pressed="false"
+            disabled>
+            Shadow
+          </button>
+
+          <!-- mega and primal buttons added by javascript -->
+
+        </div>
+
+        <p
+          id="shadow-status"
+          class="variant-description">
+          Checking Shadow availability...
+        </p>
+
+      </div>
+
+
+      <!-- ==========================================
+           6. mega and primal energy
+      ========================================== -->
+
+      <div
+        id="mega-energy-info"
+        class="mega-energy-info"
+        hidden>
+      </div>
+
+
+      <!-- ==========================================
+           7. main dashboard
+      ========================================== -->
+
+      <div class="pokemon-dashboard">
+
+        <!-- left side: pokemon images -->
+
+        <section class="artwork-panel">
+
+          <h3>Pokémon Forms</h3>
+
+          <div class="pokemon-forms">
+
+            <div class="pokemon-form">
+
+              <img
+                id="regular-image"
+                alt="Regular Pokémon artwork"
+              >
+
+              <p>Regular</p>
+
+            </div>
+
+            <div class="pokemon-form">
+
+              <img
+                id="shiny-image"
+                alt="Shiny Pokémon artwork"
+              >
+
+              <p>Shiny</p>
+
+            </div>
+
+          </div>
+
+          <p id="shiny-status"></p>
+
+          <div
+            id="shadow-info"
+            class="shadow-info"
+            hidden>
+
+            <h4>Shadow Pokémon</h4>
+
+            <p>
+              Shadow Pokémon deal 20% more damage,
+              but also take 20% more damage.
+            </p>
+
+            <p>
+              Frustration generally requires a
+              special event to remove using a
+              Charged TM.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- right side: cp and stats -->
+
+        <div class="pokemon-data-panel">
+
+          <!-- ==========================================
+               8. cp levels
+          ========================================== -->
+
+          <section class="cp-section">
+
+            <h3>Combat Power</h3>
+
+            <p class="section-description">
+              Maximum CP with perfect 15/15/15 IVs
+            </p>
+
+            <div class="cp-grid">
+
+              <div class="cp-level">
+                <span>Level 20</span>
+                <strong id="cp-20">—</strong>
+              </div>
+
+              <div class="cp-level">
+                <span>Level 40</span>
+                <strong id="cp-40">—</strong>
+              </div>
+
+              <div class="cp-level">
+                <span>Level 50</span>
+                <strong id="cp-50">—</strong>
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ==========================================
+               9. base stats
+          ========================================== -->
+
+          <section class="stats-section">
+
+            <h3>Pokémon GO Base Stats</h3>
+
+            <div id="pokemon-stats"></div>
+
+          </section>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==========================================
+           10. battle analysis
+      ========================================== -->
+
+      <section class="battle-section">
+
+        <div class="section-heading">
+
+          <div>
+
+            <h3>Battle Analysis</h3>
+
+            <p class="section-description">
+              Explore raid performance and
+              GO Battle League recommendations.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             11. pve and pvp tabs
+        ========================================== -->
+
+        <div class="moves-tabs">
+
+          <button
+            type="button"
+            id="pve-tab"
+            class="moves-tab active">
+            Raids / PvE
+          </button>
+
+          <button
+            type="button"
+            id="pvp-tab"
+            class="moves-tab">
+            GO Battle League / PvP
+          </button>
+
+        </div>
+
+
+        <!-- ==========================================
+             12. rankings
+        ========================================== -->
+
+        <section
+          id="rankings-section"
+          class="rankings-section"
+          hidden>
+
+          <h4>Battle Rankings</h4>
+
+          <p class="section-description">
+            Rankings depend on battle format,
+            Pokémon variant, and available moves.
+          </p>
+
+          <div id="rankings-content"></div>
+
+          <p
+            id="rankings-source"
+            class="data-source">
+          </p>
+
+        </section>
+
+
+        <!-- ==========================================
+             13. recommended moves
+        ========================================== -->
+
+        <section class="moves-section">
+
+          <h4>Movesets and Available Attacks</h4>
+
+          <div id="moves-content">
+
+            <p>Loading moveset information...</p>
+
+          </div>
+
+        </section>
+
+      </section>
+
+
+      <!-- ==========================================
+           14. investment info
+      ========================================== -->
+
+      <section class="investment-section">
+
+        <h3>Investment Information</h3>
+
+        <p class="section-description">
+          Consider move availability, battle role,
+          and resource costs before powering up.
+        </p>
+
+        <div id="investment-content">
+
+          <p>
+            Check the recommended movesets above
+            before using Stardust, Candy XL,
+            or Elite TMs.
+          </p>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ==========================================
+         15. footer
+    ========================================== -->
+
+    <footer>
+
+      <p>
+        Pokémon GO data provided by
+        <a
+          href="https://pogoapi.net/"
+          target="_blank"
+          rel="noopener noreferrer">
+          PoGoAPI
+        </a>
+      </p>
+
+      <p>
+        Pokémon artwork provided by
+        <a
+          href="https://pokeapi.co/"
+          target="_blank"
+          rel="noopener noreferrer">
+          PokéAPI
+        </a>
+      </p>
+
+      <p>
+        Rankings and recommendations may vary
+        with Pokémon GO battle updates.
+      </p>
+
+      <p>
+        Unofficial fan-made project.
+        Not affiliated with Nintendo,
+        The Pokémon Company, or Niantic.
+      </p>
+
+    </footer>
+
+  </main>
+
+</body>
+
+</html>
